@@ -23,6 +23,36 @@ Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings
 
 For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
 
+### Add database settings
+
+In the `./config/settings/local.py` add the following snippets if you are using PostreSQL
+
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "OPTIONS": {
+                "service": "app_tracker_service",
+            },
+        },
+    }
+
+The `app_tracker_service` should be created in the root user directory(`.pg_service.conf`) and should contain the following:
+
+    [app_tracker_service]
+    host=localhost
+    user=dev
+    dbname=app_tracker
+    port=5432
+    password=changeme407
+
+### Export .env variables
+
+The following `.env` are required for the `migration` and `runserver` to work.
+
+    export PGSERVICEFILE=~/.pg_service.conf
+    export DATABASE_URL=postgres://postgres:changeme407@127.0.0.1:5432/app_tracker
+    export USE_DOCKER="yes"
+
 ### Type checks
 
 Running type checks with mypy:
